@@ -13,7 +13,10 @@ impl NeuralNetwork {
         let hidden_layer = vec![0.0; hidden_size];
         let output_layer = vec![0.0; output_size];
 
+        //the weights between input and hidden layers
         let weights_ih = vec![vec![0.5; hidden_size]; input_size];
+
+        //hidden output
         let weights_ho = vec![vec![0.5; output_size]; hidden_size];
 
         NeuralNetwork {
@@ -33,7 +36,6 @@ mod test {
     use super::*;
 
     #[test]
-    #[should_panic]
     fn nn_test_initializer() {
         let nn = NeuralNetwork::new(4, 4, 4);
         println!("{:#?}", nn);
