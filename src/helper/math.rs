@@ -7,3 +7,22 @@ pub fn sigmoid(x: f64) -> f64 {
     let sig: f64 = 1.0 / (1.0 + E.powf(-x));
     sig
 }
+
+pub fn sigmoid_derivative(x: f64) -> f64 {
+    x * (1.0 - x)
+}
+
+// #[cfg(test)]
+// mod test {
+//     use super::*;
+
+//     #[test]
+//     fn test_sig() {
+//         let s = sigmoid(1.0);
+//     }
+
+//     #[test]
+//     fn test_sig_derivative() {
+//         let sd = sigmoid_derivative(0.5);
+//     }
+// }
