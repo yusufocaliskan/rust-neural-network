@@ -228,4 +228,64 @@ mod test {
             "Failed--> [1-0]"
         );
     }
+
+    #[test]
+    fn test_nn_and() {
+        let and_training_data = vec![
+            (vec![0.0, 0.0], vec![0.0]),
+            (vec![0.0, 1.0], vec![0.0]),
+            (vec![1.0, 0.0], vec![0.0]),
+            (vec![1.0, 1.0], vec![1.0]),
+        ];
+
+        let mut nn = NeuralNetwork::new(2, 10, 1);
+        nn.perform_training(and_training_data, 5000);
+
+        println!(
+            "Question for And --> 0-0 : {:#?}",
+            nn.feedforward(vec![0.0, 0.0])
+        );
+        println!(
+            "Question for And --> 0-1 : {:#?}",
+            nn.feedforward(vec![0.0, 1.0])
+        );
+        println!(
+            "Question for And --> 1-0 : {:#?}",
+            nn.feedforward(vec![1.0, 0.0])
+        );
+        println!(
+            "Question for And --> 1-1 : {:#?}",
+            nn.feedforward(vec![1.0, 1.0])
+        );
+    }
+
+    #[test]
+    fn test_nn_nand() {
+        let and_training_data = vec![
+            (vec![0.0, 0.0], vec![1.0]),
+            (vec![0.0, 1.0], vec![1.0]),
+            (vec![1.0, 0.0], vec![1.0]),
+            (vec![1.0, 1.0], vec![0.0]),
+        ];
+
+        let mut nn = NeuralNetwork::new(2, 10, 1);
+        nn.perform_training(and_training_data, 5000);
+
+        println!(
+            "Question for NAnd --> 0-0 : {:#?}",
+            nn.feedforward(vec![0.0, 0.0])
+        );
+        println!(
+            "Question for NAnd --> 0-1 : {:#?}",
+            nn.feedforward(vec![0.0, 1.0])
+        );
+        println!(
+            "Question for NAnd --> 1-0 : {:#?}",
+            nn.feedforward(vec![1.0, 0.0])
+        );
+        println!(
+            "Question for NAnd --> 1-1 : {:#?}",
+            nn.feedforward(vec![1.0, 1.0])
+        );
+    }
 }
