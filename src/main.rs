@@ -171,11 +171,13 @@ fn main() {
 mod test {
     use super::*;
 
+    //XOR
     #[test]
     fn test_nn() {
         //2 inputs
         //2 hidden layers
         //1 output
+
         let mut nn = NeuralNetwork::new(2, 10, 1);
 
         let training_data = vec![
@@ -229,6 +231,7 @@ mod test {
         );
     }
 
+    //AND
     #[test]
     fn test_nn_and() {
         let and_training_data = vec![
@@ -259,6 +262,7 @@ mod test {
         );
     }
 
+    //NAND
     #[test]
     fn test_nn_nand() {
         let and_training_data = vec![
