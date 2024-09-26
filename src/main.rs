@@ -1,5 +1,3 @@
-use std::mem::transmute;
-
 use nn::helper;
 
 #[derive(Debug)]
@@ -19,10 +17,10 @@ impl NeuralNetwork {
         let output_layer = vec![0.0; output_size];
 
         //the weights between input and hidden layers
-        let weights_ih = vec![vec![0.5; hidden_size]; input_size];
+        let weights_ih = vec![vec![0.2; hidden_size]; input_size];
 
         //hidden output
-        let weights_ho = vec![vec![0.5; output_size]; hidden_size];
+        let weights_ho = vec![vec![0.2; output_size]; hidden_size];
 
         NeuralNetwork {
             input_layer,
@@ -42,7 +40,7 @@ impl NeuralNetwork {
         for i in 0..self.hidden_layer.len() {
             let mut sum = 0.0;
 
-            //let's sum inputs with weights
+            //let's out sum inputs with weights
             for j in 0..self.input_layer.len() {
                 sum += self.input_layer[j] * self.weights_ih[j][i];
             }
@@ -60,6 +58,7 @@ impl NeuralNetwork {
                 sum += self.hidden_layer[j] * self.weights_ho[j][i];
             }
 
+            //we deiced if tricks the neuron
             self.output_layer[i] = helper::math::sigmoid(sum);
         }
 
@@ -81,12 +80,14 @@ impl NeuralNetwork {
         //differentiation betwen output and target
         //using to calculate weighths
         let outputs = self.feedforward(inputs);
+        // println!("Outputs of the Neurons --> {:#?}", outputs);
+
         let mut output_errors = vec![0.0; self.output_layer.len()];
         for i in 0..self.output_layer.len() {
-            output_errors[0] = targets[i] - outputs[i];
+            output_errors[i] = targets[i] - outputs[i];
         }
 
-        println!("output_errors--> {:#?}", output_errors);
+        // println!("output_errors--> {:#?}", output_errors);
 
         //step#2
         let mut hidden_errors = vec![0.0; self.hidden_layer.len()];
@@ -100,30 +101,32 @@ impl NeuralNetwork {
 
             hidden_errors[i] = error
         }
+
+        for i in 0..self.output_layer.len() {
+            for j in 0..self.hidden_layer.len() {
+                //We need to calculate
+                //effects of the errors to the weighths
+                let delta =
+                    output_errors[i] * helper::math::sigmoid_derivative(self.output_layer[i]);
+
+                self.weights_ho[j][i] += learning_rate * delta * self.hidden_layer[j];
+            }
+        }
+
+        for i in 0..self.hidden_layer.len() {
+            for j in 0..self.input_layer.len() {
+                let delta =
+                    hidden_errors[i] * helper::math::sigmoid_derivative(self.hidden_layer[i]);
+                self.weights_ih[j][i] += learning_rate * delta * self.input_layer[j];
+            }
+        }
     }
 }
 
 fn main() {
     //data for XOR
-    let training_data = vec![
-        (vec![0.0, 0.0], vec![0.0]),
-        (vec![0.0, 1.0], vec![1.0]),
-        (vec![1.0, 0.0], vec![1.0]),
-        (vec![1.0, 1.0], vec![0.0]),
-    ];
-    //2 inputs
-    //2 hidden layers
-    //1 output
 
-    let mut nn = NeuralNetwork::new(2, 2, 1);
-
-    for _ in 0..10 {
-        for &(ref inputs, ref targets) in &training_data {
-            nn.train(inputs.clone(), targets.clone(), 0.1);
-        }
-    }
-
-    println!("[0,0] --> {:#?}", nn);
+    // println!("[0,0] --> {:#?}", nn);
     // nn.feedforward(vec![0.0, 1.0]);
     // println!("[0,1] --> {:#?}", nn);
 }
@@ -133,12 +136,31 @@ mod test {
     use super::*;
 
     #[test]
-    fn nn_test_initializer() {
+    fn test_nn() {
         //2 inputs
         //2 hidden layers
         //1 output
         let mut nn = NeuralNetwork::new(2, 2, 1);
-        nn.feedforward(vec![0.0, 0.0]);
-        nn.feedforward(vec![0.0, 1.0]);
+
+        let training_data = vec![
+            (vec![0.0, 0.0], vec![0.0]),
+            (vec![0.0, 1.0], vec![1.0]),
+            (vec![1.0, 0.0], vec![1.0]),
+            (vec![1.0, 1.0], vec![0.0]),
+        ];
+
+        for _ in 0..100000 {
+            for &(ref inputs, ref targets) in &training_data {
+                // println!("Inputs {:#?}", inputs.clone());
+                // println!("Target--> {:#?}", targets.clone());
+                nn.train(inputs.clone(), targets.clone(), 0.0001);
+            }
+        }
+
+        println!("Test --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
+        println!("Test --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
+        println!("Test --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
+        println!("Test --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
+        // println!("NeuralNetwork --> Result {:#?}", nn);
     }
 }
