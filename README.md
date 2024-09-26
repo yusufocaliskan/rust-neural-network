@@ -4,17 +4,17 @@ This project implements a simple neural network in Rust to solve the XOR problem
 
 Use the fallowing command to get the static result
 
-`shell cargo run`
+```shell
+cargo run
+```
 
 Test Result:
 
 ```shell
-
-Question --> 0-0 : [ 0.05498023387754637 ] : 0
-Question --> 0-1 : [ 0.9472457448290018  ] : 1
-Question --> 1-0 : [ 0.9453824744560335  ] : 1
-Question --> 1-1 : [ 0.0518002153001278  ] : 0
-
+    Question --> 0-0 --> 0 : [ 0.05498023387754637 ]
+    Question --> 0-1 --> 1 : [ 0.9472457448290018  ]
+    Question --> 1-0 --> 1 : [ 0.9453824744560335  ]
+    Question --> 1-1 --> 0 : [ 0.0518002153001278  ]
 ```
 
 To run the test
