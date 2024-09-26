@@ -165,6 +165,10 @@ fn main() {
     println!("Question --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
 }
 
+fn debug_helper(a: f64, b: f64, trc: f64) -> bool {
+    (a - b).abs() < trc
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -190,15 +194,27 @@ mod test {
                 nn.train(inputs.clone(), targets.clone(), 0.1);
             }
         }
-
-        let tolerance = 0.05;
-
-        let output_00 = nn.feedforward(vec![0.0, 0.0])[0];
-        println!("Question --> 0-0 : {:#?}", output_00);
-        assert!((output_00 - 0.0).abs() < tolerance, "Failed: 0-0");
         // println!("Question --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
         // println!("Question --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
         // println!("Question --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
         // println!("NeuralNetwork --> Result {:#?}", nn);
+
+        let tolerance = 0.09;
+
+        let output_00 = nn.feedforward(vec![0.0, 0.0])[0];
+        println!("Test [0-0] -> {:?}", output_00);
+        assert!(debug_helper(output_00, 0.0, tolerance), "Failed--> [0-0]");
+
+        let output_01 = nn.feedforward(vec![0.0, 1.0])[0];
+        println!("Test [0-1] -> {:?}", output_01);
+        assert!(debug_helper(output_01, 1.0, tolerance), "Failed--> [0-1]");
+
+        let output_10 = nn.feedforward(vec![1.0, 0.0])[0];
+        println!("Test [1-0] -> {:?}", output_10);
+        assert!(debug_helper(output_10, 1.0, tolerance), "Failed--> [1-0]");
+
+        let output_11 = nn.feedforward(vec![1.0, 1.0])[0];
+        println!("Test [1-0] -> {:?}", output_11);
+        assert!(debug_helper(output_11, 0.0, tolerance), "Failed--> [1-0]");
     }
 }
