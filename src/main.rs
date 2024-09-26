@@ -17,10 +17,10 @@ impl NeuralNetwork {
         let output_layer = vec![0.0; output_size];
 
         //the weights between input and hidden layers
-        let weights_ih = vec![vec![0.2; hidden_size]; input_size];
+        let weights_ih = vec![vec![0.5; hidden_size]; input_size];
 
         //hidden output
-        let weights_ho = vec![vec![0.2; output_size]; hidden_size];
+        let weights_ho = vec![vec![0.5; output_size]; hidden_size];
 
         NeuralNetwork {
             input_layer,
@@ -140,7 +140,7 @@ mod test {
         //2 inputs
         //2 hidden layers
         //1 output
-        let mut nn = NeuralNetwork::new(2, 2, 1);
+        let mut nn = NeuralNetwork::new(2, 10, 1);
 
         let training_data = vec![
             (vec![0.0, 0.0], vec![0.0]),
@@ -153,7 +153,7 @@ mod test {
             for &(ref inputs, ref targets) in &training_data {
                 // println!("Inputs {:#?}", inputs.clone());
                 // println!("Target--> {:#?}", targets.clone());
-                nn.train(inputs.clone(), targets.clone(), 0.0001);
+                nn.train(inputs.clone(), targets.clone(), 0.1);
             }
         }
 
