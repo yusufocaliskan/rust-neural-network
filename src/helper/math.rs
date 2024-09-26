@@ -12,6 +12,22 @@ pub fn sigmoid_derivative(x: f64) -> f64 {
     x * (1.0 - x)
 }
 
+pub fn relu(x: f64) -> f64 {
+    if x > 0.0 {
+        x
+    } else {
+        0.0
+    }
+}
+
+pub fn relu_derivative(x: f64) -> f64 {
+    if x > 0.0 {
+        1.0
+    } else {
+        0.0
+    }
+}
+
 // #[cfg(test)]
 // mod test {
 //     use super::*;

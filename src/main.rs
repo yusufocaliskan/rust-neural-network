@@ -33,8 +33,8 @@ impl NeuralNetwork {
             .map(|_| (0..output_size).map(|_| rng.gen_range(-1.0..1.0)).collect())
             .collect();
 
-        println!("weights_ih-- > {:#?}", weights_ih);
-        println!("weights_ho-- > {:#?}", weights_ho);
+        // println!("weights_ih-- > {:#?}", weights_ih);
+        // println!("weights_ho-- > {:#?}", weights_ho);
 
         NeuralNetwork {
             input_layer,
@@ -154,7 +154,7 @@ mod test {
         //2 inputs
         //2 hidden layers
         //1 output
-        let mut nn = NeuralNetwork::new(2, 2, 1);
+        let mut nn = NeuralNetwork::new(2, 10, 1);
 
         let training_data = vec![
             (vec![0.0, 0.0], vec![0.0]),
@@ -163,18 +163,18 @@ mod test {
             (vec![1.0, 1.0], vec![0.0]),
         ];
 
-        for _ in 0..100000 {
+        for _ in 0..5000 {
             for &(ref inputs, ref targets) in &training_data {
                 // println!("Inputs {:#?}", inputs.clone());
                 // println!("Target--> {:#?}", targets.clone());
-                nn.train(inputs.clone(), targets.clone(), 0.001);
+                nn.train(inputs.clone(), targets.clone(), 0.1);
             }
         }
 
-        println!("Test --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
-        println!("Test --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
-        println!("Test --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
-        println!("Test --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
+        println!("Question  --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
+        println!("Question --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
+        println!("Question --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
+        println!("Question --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
         // println!("NeuralNetwork --> Result {:#?}", nn);
     }
 }
