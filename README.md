@@ -24,6 +24,8 @@ cargo test xor_test_nn -- --nocapture
     Test XOR [1-0] -> 0.047543707694473566
 ```
 
+AND
+
 ```shell
 cargo test and_test_nn
 
@@ -31,8 +33,6 @@ cargo test and_test_nn
 //to display the result
 cargo test and_test_nn -- --nocapture
 ```
-
-AND
 
 ```shell
 Question for And --> 0-0 : [
