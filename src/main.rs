@@ -2,7 +2,6 @@ use nn::helper;
 use rand::Rng;
 
 #[derive(Debug)]
-#[allow(dead_code)]
 struct NeuralNetwork {
     input_layer: Vec<f64>,
     hidden_layer: Vec<f64>,
@@ -135,6 +134,16 @@ impl NeuralNetwork {
             }
         }
     }
+
+    fn perform_training(&mut self, training_data: Vec<(Vec<f64>, Vec<f64>)>, epochs: usize) {
+        for _ in 0..epochs {
+            for &(ref inputs, ref targets) in &training_data {
+                // println!("Inputs {:#?}", inputs.clone());
+                // println!("Target--> {:#?}", targets.clone());
+                self.train(inputs.clone(), targets.clone(), 0.1);
+            }
+        }
+    }
 }
 
 fn main() {
@@ -142,8 +151,6 @@ fn main() {
     //2 inputs
     //2 hidden layers
     //1 output
-    let mut nn = NeuralNetwork::new(2, 10, 1);
-
     let training_data = vec![
         (vec![0.0, 0.0], vec![0.0]),
         (vec![0.0, 1.0], vec![1.0]),
@@ -151,22 +158,13 @@ fn main() {
         (vec![1.0, 1.0], vec![0.0]),
     ];
 
-    for _ in 0..5000 {
-        for &(ref inputs, ref targets) in &training_data {
-            // println!("Inputs {:#?}", inputs.clone());
-            // println!("Target--> {:#?}", targets.clone());
-            nn.train(inputs.clone(), targets.clone(), 0.1);
-        }
-    }
+    let mut nn = NeuralNetwork::new(2, 10, 1);
+    nn.perform_training(training_data, 5000);
 
     println!("Question  --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
     println!("Question --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
     println!("Question --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
     println!("Question --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
-}
-
-fn debug_helper(a: f64, b: f64, trc: f64) -> bool {
-    (a - b).abs() < trc
 }
 
 #[cfg(test)]
@@ -187,6 +185,7 @@ mod test {
             (vec![1.0, 1.0], vec![0.0]),
         ];
 
+        //for better approach check the main() fn
         for _ in 0..5000 {
             for &(ref inputs, ref targets) in &training_data {
                 // println!("Inputs {:#?}", inputs.clone());
@@ -203,18 +202,30 @@ mod test {
 
         let output_00 = nn.feedforward(vec![0.0, 0.0])[0];
         println!("Test [0-0] -> {:?}", output_00);
-        assert!(debug_helper(output_00, 0.0, tolerance), "Failed--> [0-0]");
+        assert!(
+            helper::debug::debug_helper(output_00, 0.0, tolerance),
+            "Failed--> [0-0]"
+        );
 
         let output_01 = nn.feedforward(vec![0.0, 1.0])[0];
         println!("Test [0-1] -> {:?}", output_01);
-        assert!(debug_helper(output_01, 1.0, tolerance), "Failed--> [0-1]");
+        assert!(
+            helper::debug::debug_helper(output_01, 1.0, tolerance),
+            "Failed--> [0-1]"
+        );
 
         let output_10 = nn.feedforward(vec![1.0, 0.0])[0];
         println!("Test [1-0] -> {:?}", output_10);
-        assert!(debug_helper(output_10, 1.0, tolerance), "Failed--> [1-0]");
+        assert!(
+            helper::debug::debug_helper(output_10, 1.0, tolerance),
+            "Failed--> [1-0]"
+        );
 
         let output_11 = nn.feedforward(vec![1.0, 1.0])[0];
         println!("Test [1-0] -> {:?}", output_11);
-        assert!(debug_helper(output_11, 0.0, tolerance), "Failed--> [1-0]");
+        assert!(
+            helper::debug::debug_helper(output_11, 0.0, tolerance),
+            "Failed--> [1-0]"
+        );
     }
 }
