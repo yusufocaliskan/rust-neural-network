@@ -7,4 +7,5 @@ edition = "2021"
 test_nn = "test test_nn -- --nocapture"
 
 [dependencies]
+rand = "0.8.5"
 

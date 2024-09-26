@@ -1,4 +1,5 @@
 use nn::helper;
+use rand::Rng;
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -16,11 +17,24 @@ impl NeuralNetwork {
         let hidden_layer = vec![0.0; hidden_size];
         let output_layer = vec![0.0; output_size];
 
+        //random
+        let mut rng = rand::thread_rng();
+
         //the weights between input and hidden layers
-        let weights_ih = vec![vec![0.2; hidden_size]; input_size];
+
+        // let weights_ih = vec![vec![0.2; hidden_size]; input_size];
+        let weights_ih = (0..input_size)
+            .map(|_| (0..hidden_size).map(|_| rng.gen_range(-1.0..1.0)).collect())
+            .collect();
 
         //hidden output
-        let weights_ho = vec![vec![0.2; output_size]; hidden_size];
+        // let weights_ho = vec![vec![0.2; output_size]; hidden_size];
+        let weights_ho = (0..hidden_size)
+            .map(|_| (0..output_size).map(|_| rng.gen_range(-1.0..1.0)).collect())
+            .collect();
+
+        println!("weights_ih-- > {:#?}", weights_ih);
+        println!("weights_ho-- > {:#?}", weights_ho);
 
         NeuralNetwork {
             input_layer,
@@ -153,7 +167,7 @@ mod test {
             for &(ref inputs, ref targets) in &training_data {
                 // println!("Inputs {:#?}", inputs.clone());
                 // println!("Target--> {:#?}", targets.clone());
-                nn.train(inputs.clone(), targets.clone(), 0.0001);
+                nn.train(inputs.clone(), targets.clone(), 0.001);
             }
         }
 
