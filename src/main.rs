@@ -173,7 +173,7 @@ mod test {
 
     //XOR
     #[test]
-    fn test_nn() {
+    fn xor_test_nn() {
         //2 inputs
         //2 hidden layers
         //1 output
@@ -203,28 +203,28 @@ mod test {
         let tolerance = 0.09;
 
         let output_00 = nn.feedforward(vec![0.0, 0.0])[0];
-        println!("Test [0-0] -> {:?}", output_00);
+        println!("Test XOR [0-0] -> {:?}", output_00);
         assert!(
             helper::debug::debug_helper(output_00, 0.0, tolerance),
             "Failed--> [0-0]"
         );
 
         let output_01 = nn.feedforward(vec![0.0, 1.0])[0];
-        println!("Test [0-1] -> {:?}", output_01);
+        println!("Test XOR [0-1] -> {:?}", output_01);
         assert!(
             helper::debug::debug_helper(output_01, 1.0, tolerance),
             "Failed--> [0-1]"
         );
 
         let output_10 = nn.feedforward(vec![1.0, 0.0])[0];
-        println!("Test [1-0] -> {:?}", output_10);
+        println!("Test XOR [1-0] -> {:?}", output_10);
         assert!(
             helper::debug::debug_helper(output_10, 1.0, tolerance),
             "Failed--> [1-0]"
         );
 
         let output_11 = nn.feedforward(vec![1.0, 1.0])[0];
-        println!("Test [1-0] -> {:?}", output_11);
+        println!("Test XOR [1-0] -> {:?}", output_11);
         assert!(
             helper::debug::debug_helper(output_11, 0.0, tolerance),
             "Failed--> [1-0]"
@@ -233,7 +233,7 @@ mod test {
 
     //AND
     #[test]
-    fn test_nn_and() {
+    fn and_test_nn() {
         let and_training_data = vec![
             (vec![0.0, 0.0], vec![0.0]),
             (vec![0.0, 1.0], vec![0.0]),
@@ -244,27 +244,15 @@ mod test {
         let mut nn = NeuralNetwork::new(2, 10, 1);
         nn.perform_training(and_training_data, 5000);
 
-        println!(
-            "Question for And --> 0-0 : {:#?}",
-            nn.feedforward(vec![0.0, 0.0])
-        );
-        println!(
-            "Question for And --> 0-1 : {:#?}",
-            nn.feedforward(vec![0.0, 1.0])
-        );
-        println!(
-            "Question for And --> 1-0 : {:#?}",
-            nn.feedforward(vec![1.0, 0.0])
-        );
-        println!(
-            "Question for And --> 1-1 : {:#?}",
-            nn.feedforward(vec![1.0, 1.0])
-        );
+        println!("Test AND --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
+        println!("Test AND --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
+        println!("Test AND --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
+        println!("Test AND --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
     }
 
     //NAND
     #[test]
-    fn test_nn_nand() {
+    fn nand_test_nn() {
         let and_training_data = vec![
             (vec![0.0, 0.0], vec![1.0]),
             (vec![0.0, 1.0], vec![1.0]),
@@ -275,21 +263,9 @@ mod test {
         let mut nn = NeuralNetwork::new(2, 10, 1);
         nn.perform_training(and_training_data, 5000);
 
-        println!(
-            "Question for NAnd --> 0-0 : {:#?}",
-            nn.feedforward(vec![0.0, 0.0])
-        );
-        println!(
-            "Question for NAnd --> 0-1 : {:#?}",
-            nn.feedforward(vec![0.0, 1.0])
-        );
-        println!(
-            "Question for NAnd --> 1-0 : {:#?}",
-            nn.feedforward(vec![1.0, 0.0])
-        );
-        println!(
-            "Question for NAnd --> 1-1 : {:#?}",
-            nn.feedforward(vec![1.0, 1.0])
-        );
+        println!("Test NAND --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
+        println!("Test NAND --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
+        println!("Test NAND --> 1-0 : {:#?}", nn.feedforward(vec![1.0, 0.0]));
+        println!("Test NAND --> 1-1 : {:#?}", nn.feedforward(vec![1.0, 1.0]));
     }
 }
