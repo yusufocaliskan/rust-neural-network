@@ -16,6 +16,11 @@ impl NeuralNetwork {
         let hidden_layer = vec![0.0; hidden_size];
         let output_layer = vec![0.0; output_size];
 
+        println!("----- Start ----");
+        helper::debug::pr("input_layer", &input_layer);
+        helper::debug::pr("input_layer", &input_layer);
+        helper::debug::pr("output_layer", &output_layer);
+
         //random
         let mut rng = rand::thread_rng();
 
@@ -58,6 +63,7 @@ impl NeuralNetwork {
                 sum += self.input_layer[j] * self.weights_ih[j][i];
             }
 
+            //Try relu in the hidden  layer
             self.hidden_layer[i] = helper::math::sigmoid(sum);
 
             // println!("{}", sum);
@@ -144,6 +150,10 @@ impl NeuralNetwork {
             }
         }
     }
+
+    fn debug(&self, text: &str) {
+        helper::debug::pr(text, &self);
+    }
 }
 
 fn main() {
@@ -159,7 +169,10 @@ fn main() {
     ];
 
     let mut nn = NeuralNetwork::new(2, 10, 1);
+
+    nn.debug("---Before feeding  ---");
     nn.perform_training(training_data, 5000);
+    nn.debug("---After feeding ---");
 
     println!("Question  --> 0-0 : {:#?}", nn.feedforward(vec![0.0, 0.0]));
     println!("Question --> 0-1 : {:#?}", nn.feedforward(vec![0.0, 1.0]));
